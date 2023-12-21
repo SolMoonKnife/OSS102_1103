@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import *
+import math
 
 class Main(QDialog):
     def __init__(self):
@@ -11,7 +12,6 @@ class Main(QDialog):
         main_layout = QGridLayout()
 
         ### 각 위젯을 배치할 레이아웃을 미리 만들어 둠
-        # layout_operation = QHBoxLayout()
         layout_clear_equal = QHBoxLayout()
         layout_number = QGridLayout()
         layout_equation_solution = QFormLayout()
@@ -19,14 +19,11 @@ class Main(QDialog):
         ### 수식 입력과 답 출력을 위한 LineEdit 위젯 생성
         ### (#1 : 하나의 equation 창으로 통합하기 위해 위젯 하나만 생성으로 수정)
         label_equation = QLabel("Window: ")
-        # label_solution = QLabel("Solution: ")
         self.equation = QLineEdit("")
-        # self.solution = QLineEdit("")
 
         ### layout_equation_solution 레이아웃에 수식, 답 위젯을 추가
         ### (#1 : 레이아웃에 하나의 창 위젯만 추가)
         layout_equation_solution.addRow(label_equation, self.equation)
-        # layout_equation_solution.addRow(label_solution, self.solution)
 
         ### 사칙연산 버튼 생성
         button_plus = QPushButton("+")
@@ -63,7 +60,6 @@ class Main(QDialog):
         ### (#2 : 이퀄 버튼은 숫자 레이아웃으로 이동)
         layout_clear_equal.addWidget(button_clear)
         layout_clear_equal.addWidget(button_backspace)
-        # layout_clear_equal.addWidget(button_equal)
 
          ### 숫자 버튼 생성하고, layout_number 레이아웃에 추가
         ### 각 숫자 버튼을 클릭했을 때, 숫자가 수식창에 입력 될 수 있도록 시그널 설정
@@ -118,7 +114,6 @@ class Main(QDialog):
         ### 각 레이아웃을 main_layout 레이아웃에 추가
         ### (#2 : 그리드 레이아웃으로 재정렬)
         main_layout.addLayout(layout_equation_solution, 0, 0)
-        # main_layout.addLayout(layout_operation)
         main_layout.addLayout(layout_clear_equal, 1, 0)
         main_layout.addLayout(layout_number, 2, 0)
 
@@ -175,17 +170,23 @@ class Main(QDialog):
                 result %= numbers[i]
         return str(result)
 
-    # (추가 : 역수 버튼)
+    # (추가 : 역수 버튼, #6 : 버튼 3종의 기능 구현)
     def button_rev_clicked(self):
-        pass
+        equation = self.equation.text()
+        equation = str(1 / float(equation))
+        self.equation.setText(str(equation))
 
     # (추가 : 제곱 버튼)
     def button_sqre_clicked(self):
-        pass
+        equation = self.equation.text()
+        equation = str(float(equation)**2)
+        self.equation.setText(str(equation))
 
     # (추가 : 근호 버튼)
     def button_root_clicked(self):
-        pass
+        equation = self.equation.text()
+        equation = str(math.sqrt(float(equation)))
+        self.equation.setText(str(equation))
 
     ### (#2 : 창 통합으로 인한 솔루션 초기화 삭제)
     def button_clear_clicked(self):
