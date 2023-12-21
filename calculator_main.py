@@ -139,10 +139,41 @@ class Main(QDialog):
         self.equation.setText(equation)
 
     ### (#1 : 하나의 창에 표시하기 위해 결과를 equation 위젯 텍스트로 설정)
+    ### (#5 : 연산 기능 개선 - eval 대신 사칙연산 메서드 정의)
     def button_equal_clicked(self):
-        equation = self.equation.text()
-        solution = eval(equation)
+        solution = self.calculate_str()
         self.equation.setText(str(solution))
+
+    def calculate_str(self):
+        equation = self.equation.text()
+        numbers = []
+        operators = []
+
+        current_number = ''
+        for char in equation:
+            if char.isdigit() or char == '.':
+                current_number += char
+            else:
+                if current_number:
+                    numbers.append(float(current_number))
+                    current_number = ''
+                if char in ['+', '-', '*', '/', '%']:
+                    operators.append(char)
+        if current_number:
+            numbers.append(float(current_number))
+        result = numbers[0]
+        for i in range(1, len(numbers)):
+            if operators[i - 1] == '+':
+                result += numbers[i]
+            elif operators[i - 1] == '-':
+                result -= numbers[i]
+            elif operators[i - 1] == '*':
+                result *= numbers[i]
+            elif operators[i - 1] == '/':
+                result /= numbers[i]
+            elif operators[i - 1] == '%':
+                result %= numbers[i]
+        return str(result)
 
     # (추가 : 역수 버튼)
     def button_rev_clicked(self):
