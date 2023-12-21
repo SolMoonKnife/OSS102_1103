@@ -20,6 +20,7 @@ class Main(QDialog):
         ### (#1 : 하나의 equation 창으로 통합하기 위해 위젯 하나만 생성으로 수정)
         label_equation = QLabel("Window: ")
         # label_solution = QLabel("Solution: ")
+        
         self.equation = QLineEdit("")
         # self.solution = QLineEdit("")
 
